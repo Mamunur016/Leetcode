@@ -14,6 +14,79 @@ struct node
     }
 };
 
+bool getPath(node *root, int key, vector<int> &path)
+{
+
+    if (root == NULL)
+    {
+        return false;
+    }
+    path.push_back(root->data);
+
+    if (key == root->data)
+    {
+        return true;
+    }
+
+    if (getPath(root->left, key, path) || getPath(root->right, key, path))
+    {
+        return true;
+    }
+
+    path.pop_back();
+    return false;
+}
+
+int LCA(node *root, int n1, int n2)
+{
+
+    vector<int> path1, path2;
+
+    if (!getPath(root, n1, path1) || !getPath(root, n2, path2))
+    {
+
+        return -1;
+    }
+
+    int pc;
+
+    for (pc = 0; pc < path1.size() && pc < path2.size(); ++pc)
+    {
+
+        if (path1[pc] != path2[pc])
+        {
+            break;
+        }
+    }
+
+    return path1[pc - 1];
+}
+
+node *LCA2(node *root, int n1, int n2)
+{
+
+    if (root == NULL)
+    {
+        return NULL;
+    }
+    if (root->data == n1 || root->data == n2)
+    {
+        return root;
+    }
+
+    node *left = LCA2(root->left, n1, n2);
+    node *right = LCA2(root->right, n1, n2);
+
+    if (left && right)
+    {
+        return root;
+    }
+    if (left != NULL)
+    {
+        return left;
+    }
+    return right;
+}
 //// level oder traversal
 
 void levelOrder(node *root)
@@ -73,6 +146,11 @@ int main()
     cout << "\nlevel order traversal\n";
 
     levelOrder(root);
+
+    cout << "\nLongest common ancestor\n";
+
+    node *currNode = LCA2(root, 6, 7);
+    cout << currNode->data;
 
     return 0;
 }

@@ -65,7 +65,7 @@ int clacDiammeter(node *root)
     }
     int lHeight = HeightOfTree(root->left);
     int rHeight = HeightOfTree(root->right);
-    int currDiameter = lHeight + rHeight + 1;
+    int currDiameter = lHeight + rHeight;
 
     int lDiameter = clacDiammeter(root->left);
     int rDiameter = clacDiammeter(root->right);
